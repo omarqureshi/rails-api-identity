@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
   before_validation :downcase_email, :on => :save
   after_validation :set_token, :on => :create
 
-  validates :email, :presence => true, :uniqueness => true
-  validates :token, :presence => true, :uniqueness => true
+  validates :email, :presence => true, :uniqueness => {:case_sensitive => false}
 
   def set_token
     self.token = SecureRandom.uuid

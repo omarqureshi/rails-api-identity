@@ -1,20 +1,18 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  subject { @user = User.create!(FactoryGirl.attributes_for(:user)) }
+  should validate_presence_of :email
+  should validate_uniqueness_of :email
 
-  def create_valid_user
-    @user = FactoryGirl.build(:user)
-  end
-
-  def test_creating_a_user_saves
-    create_valid_user
-    assert @user.save
-  end
-
-  def test_creating_a_user_sets_token
-    create_valid_user
-    @user.save
-    assert @user.token.present?
+  context 'when creating a user' do
+    setup do
+      @user = FactoryGirl.build(:user)
+      @user.save
+    end
+    should 'set the token' do
+      assert @user.token.present?
+    end
   end
 
 end
